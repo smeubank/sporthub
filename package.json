@@ -7,10 +7,13 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "start": "node --import ./.output/server/sentry.server.config.mjs .output/server/index.mjs"
   },
   "dependencies": {
+    "@sentry/nuxt": "^8.33.1",
     "axios": "^1.7.7",
+    "dotenv": "^16.4.5",
     "nuxt": "^3.13.0",
     "vue": "latest",
     "vue-router": "latest"

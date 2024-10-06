@@ -3,6 +3,7 @@
     <div v-for="activity in activities" :key="activity.id" class="card">
       <div class="strava-embed-placeholder" :data-embed-id="activity.id" data-embed-type="activity" data-style="standard"></div>
     </div>
+    <button id="errorBtn" @click="triggerError">Trigger Error</button>
   </div>
 </template>
 
@@ -10,6 +11,21 @@
 import stravaService from '~/services/stravaService';
 
 export default {
+  async asyncData({ $stravaService }) {
+    try {
+      const activities = await $stravaService.getActivities();
+      return { activities };
+    } catch (error) {
+      console.error('Failed to fetch activities:', error);
+      // Return placeholder data in case of an error
+      return {
+        activities: Array.from({ length: 5 }, (_, index) => ({
+          id: `placeholder-${index}`,
+          name: `Placeholder Activity ${index + 1}`
+        }))
+      };
+    }
+  },
   data() {
     return {
       activities: []
@@ -24,6 +40,9 @@ export default {
       const script = document.createElement('script');
       script.src = 'https://strava-embeds.com/embed.js';
       document.body.appendChild(script);
+    },
+    triggerError() {
+      throw new Error("Nuxt Button Error");
     }
   }
 };
